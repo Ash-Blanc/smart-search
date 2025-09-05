@@ -140,4 +140,4 @@ Thumbs.db
 data/
 *.db
 *.sqlite
-.env.example
+.env
