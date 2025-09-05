@@ -27,6 +27,12 @@ class VerificationAgent:
             ]
         )
     
+    def _extract_content(self, response):
+        """Extract content from RunResponse or return string representation"""
+        if hasattr(response, 'content'):
+            return response.content
+        return str(response)
+    
     def verify(self, content: str, sources: list = None):
         """Verify content accuracy"""
         prompt = f"""
@@ -51,9 +57,12 @@ class VerificationAgent:
     
     def check_hallucination(self, response: str, original_query: str):
         """Check if response contains hallucinations"""
+        # Extract content from RunResponse if needed
+        response_content = self._extract_content(response)
+        
         prompt = f"""
         Original query: {original_query}
-        Response: {response}
+        Response: {response_content}
         
         Analyze if the response:
         1. Answers the actual question asked
@@ -77,13 +86,19 @@ class AntiHallucinationSearch:
         # Get initial results
         results = self.search_agent.search(query)
         
+        # Extract content from RunResponse if needed
+        results_content = self.verifier._extract_content(results)
+        
         # Verify results
-        verification = self.verifier.check_hallucination(results, query)
+        verification = self.verifier.check_hallucination(results_content, query)
+        
+        # Extract content from verification RunResponse if needed
+        verification_content = self.verifier._extract_content(verification)
         
         # If issues found, retry with stricter prompt
-        if "No" in verification:
+        if "No" in verification_content:
             strict_prompt = f"""
-            Previous search had accuracy issues: {verification}
+            Previous search had accuracy issues: {verification_content}
             
             Search again for: {query}
             
@@ -93,18 +108,22 @@ class AntiHallucinationSearch:
             - Say "Information not found" if uncertain
             """
             results = self.search_agent.agent.run(strict_prompt)
+            results_content = self.verifier._extract_content(results)
         
         return {
-            "results": results,
-            "verification": verification,
-            "confidence": self._extract_confidence(verification)
+            "results": results_content,
+            "verification": verification_content,
+            "confidence": self._extract_confidence(verification_content)
         }
     
     def _extract_confidence(self, verification):
+        # Extract content from RunResponse if needed
+        verification_content = self.verifier._extract_content(verification)
+        
         # Simple confidence extraction
-        if "Yes" in verification:
+        if "Yes" in verification_content:
             return 95
-        elif "Partial" in verification:
+        elif "Partial" in verification_content:
             return 70
         else:
             return 50

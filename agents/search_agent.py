@@ -39,6 +39,12 @@ class SmartSearchAgent:
             markdown=True
         )
     
+    def _extract_content(self, response):
+        """Extract content from RunResponse or return string representation"""
+        if hasattr(response, 'content'):
+            return response.content
+        return str(response)
+    
     def _create_knowledge_base(self):
         """Create knowledge base with hybrid search"""
         return UrlKnowledge(

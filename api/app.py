@@ -42,32 +42,51 @@ def load_css():
     
     /* Search box styling */
     .stTextInput > div > div > input {
-        background-color: #f0f2f6;
-        border-radius: 20px;
-        padding: 0.5rem 1rem;
+        background-color: white;
+        color: #333333;
+        border: 2px solid #1e88e5;
+        border-radius: 30px;
+        padding: 0.75rem 1.5rem;
         font-size: 1.1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+        animation: pulse 2s infinite;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #0d47a1;
+        box-shadow: 0 2px 10px rgba(30, 136, 229, 0.3);
+        outline: none;
+        animation: none;
+    }
+    
+    /* Placeholder text color */
+    .stTextInput > div > div > input::placeholder {
+        color: #999999 !important;
     }
     
     /* Button styling */
     .stButton > button {
         background-color: #1e88e5;
         color: white;
-        border-radius: 20px;
-        padding: 0.5rem 2rem;
+        border-radius: 30px;
+        padding: 0.75rem 2rem;
         font-weight: bold;
         border: none;
         transition: all 0.3s;
+        font-size: 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .stButton > button:hover {
         background-color: #1565c0;
         transform: translateY(-2px);
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
     
     /* Metric cards */
     div[data-testid="metric-container"] {
-        background-color: #f0f2f6;
+        background-color: white;
         border: 1px solid #e0e0e0;
         padding: 1rem;
         border-radius: 10px;
@@ -87,15 +106,15 @@ def load_css():
     .result-card {
         background-color: white;
         border: 1px solid #e0e0e0;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
         transition: all 0.3s;
     }
     
     .result-card:hover {
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
         transform: translateY(-2px);
     }
     
@@ -113,6 +132,72 @@ def load_css():
     .confidence-low {
         color: #f44336;
         font-weight: bold;
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+        .stTextInput > div > div > input {
+            background-color: #2d2d2d;
+            color: #ffffff;
+            border-color: #1e88e5;
+        }
+        
+        .stTextInput > div > div > input::placeholder {
+            color: #aaaaaa !important;
+        }
+        
+        .result-card {
+            background-color: #1e1e1e;
+            border-color: #444444;
+        }
+        
+        div[data-testid="metric-container"] {
+            background-color: #1e1e1e;
+            border-color: #444444;
+        }
+    }
+    
+    /* Suggestion buttons */
+    .stButton button[k*="sugg_"] {
+        background-color: #f5f5f5;
+        color: #333333;
+        border-radius: 15px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        border: 1px solid #e0e0e0;
+        margin: 0.25rem 0;
+    }
+    
+    .stButton button[k*="sugg_"]:hover {
+        background-color: #e8f0fe;
+        border-color: #1e88e5;
+        transform: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Header styling */
+    h1 {
+        color: #1e88e5;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Progress bar */
+    .stProgress > div > div > div {
+        background-color: #1e88e5;
+    }
+    
+    /* Pulse animation for search bar */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(30, 136, 229, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(30, 136, 229, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(30, 136, 229, 0);
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -140,9 +225,9 @@ init_session_state()
 col1, col2, col3 = st.columns([1, 3, 1])
 with col2:
     st.markdown("""
-    <div style='text-align: center;'>
-        <h1>🔍 Smart Search</h1>
-        <p style='font-size: 1.2rem; color: #666;'>
+    <div style='text-align: center; padding: 1rem; border-radius: 15px; background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%); margin-bottom: 2rem; box-shadow: 0 4px 15px rgba(30, 136, 229, 0.3);'>
+        <h1 style='color: white; margin: 0; font-weight: 700;'>🔍 Smart Search</h1>
+        <p style='font-size: 1.2rem; color: #e3f2fd; margin: 0.5rem 0 0 0;'>
             AI-Powered Search • Zero Hallucinations • Personalized Results
         </p>
     </div>
@@ -154,17 +239,24 @@ with search_container:
     col1, col2, col3 = st.columns([1, 6, 1])
     
     with col2:
+        # Enhanced search input with icon
+        st.markdown("""
+        <div style='text-align: center; margin-bottom: 1rem;'>
+            <h2 style='color: #1e88e5; font-weight: 600;'>What would you like to know?</h2>
+        </div>
+        """, unsafe_allow_html=True)
+        
         # Search input with suggestions
         query = st.text_input(
-            "",
+            "Search",
             placeholder="Ask anything... (e.g., 'Latest AI breakthroughs', 'Climate solutions 2024')",
             key="search_input",
-            label_visibility="collapsed"
+            label_visibility="visible"
         )
         
         # Search suggestions
         if query == "":
-            st.markdown("**Try searching for:**")
+            st.markdown("<div style='margin-top: 1rem;'><b>💡 Try searching for:</b></div>", unsafe_allow_html=True)
             suggestion_cols = st.columns(3)
             suggestions = [
                 "🤖 Latest AI developments 2024",

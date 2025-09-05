@@ -27,6 +27,12 @@ class PersonalizationEngine:
         )
         self.user_profiles = {}
     
+    def _extract_content(self, response):
+        """Extract content from RunResponse or return string representation"""
+        if hasattr(response, 'content'):
+            return response.content
+        return str(response)
+    
     def update_profile(self, user_id: str, interaction: dict):
         """Update user profile based on interaction"""
         if user_id not in self.user_profiles:
@@ -59,7 +65,9 @@ class PersonalizationEngine:
             Identify top 5 user interests/topics.
             """
             interests = self.agent.run(interests_prompt)
-            profile["interests"] = interests
+            # Extract content from RunResponse if needed
+            interests_content = self._extract_content(interests)
+            profile["interests"] = interests_content
         
         return profile
     
@@ -70,12 +78,15 @@ class PersonalizationEngine:
         if not profile.get("interests"):
             return search_results
         
+        # Extract content from search_results if it's a RunResponse
+        search_results_content = self._extract_content(search_results)
+        
         personalization_prompt = f"""
         User interests: {profile['interests']}
         Recent searches: {profile.get('searches', [])[-5:]}
         
         Re-rank and highlight these search results based on user preferences:
-        {search_results}
+        {search_results_content}
         
         Make results more relevant to their interests.
         """
@@ -102,7 +113,9 @@ class PersonalizedSmartSearch:
                 user_id, 
                 search_result["results"]
             )
-            search_result["results"] = personalized
+            # Extract content from RunResponse if needed
+            personalized_content = self.personalization._extract_content(personalized)
+            search_result["results"] = personalized_content
             search_result["personalized"] = True
         
         return search_result
