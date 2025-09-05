@@ -11,7 +11,8 @@ class VerificationAgent:
             role="Verify information accuracy",
             model=OpenAIChat(
                 id="gpt-4o-mini",
-                api_key=OPENAI_API_KEY
+                api_key=OPENAI_API_KEY,
+                base_url="https://openrouter.ai/api/v1"  # OpenRouter endpoint
             ),
             tools=[
                 ReasoningTools(add_instructions=True),

@@ -11,7 +11,11 @@ class PersonalizationEngine:
         self.agent = Agent(
             name="Personalization Engine",
             role="Learn user preferences and personalize results",
-            model=OpenAIChat(id="gpt-4o-mini", api_key=OPENAI_API_KEY),
+            model=OpenAIChat(
+                id="gpt-4o-mini", 
+                api_key=OPENAI_API_KEY,
+                base_url="https://openrouter.ai/api/v1"  # OpenRouter endpoint
+            ),
             memory=AgentMemory(),
             storage=AgentStorage(),
             instructions=[

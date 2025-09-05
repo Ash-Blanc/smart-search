@@ -4,11 +4,12 @@ from config import OPENAI_API_KEY
 
 class SearchOptimizer:
     def __init__(self):
-        # Configure DSPy
+        # Configure DSPy with OpenRouter
         self.lm = dspy.OpenAI(
             model="gpt-4o-mini",
             api_key=OPENAI_API_KEY,
-            max_tokens=1000
+            max_tokens=1000,
+            api_base="https://openrouter.ai/api/v1"  # OpenRouter endpoint
         )
         dspy.settings.configure(lm=self.lm)
     

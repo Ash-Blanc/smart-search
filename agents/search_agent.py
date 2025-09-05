@@ -20,7 +20,8 @@ class SmartSearchAgent:
             role="Provide accurate, unbiased search results",
             model=OpenAIChat(
                 id="gpt-4o-mini",  # Faster & cheaper for hackathon
-                api_key=OPENAI_API_KEY
+                api_key=OPENAI_API_KEY,
+                base_url="https://openrouter.ai/api/v1"  # OpenRouter endpoint
             ),
             memory=AgentMemory(),
             knowledge=self.knowledge,
@@ -51,7 +52,8 @@ class SmartSearchAgent:
                 search_type=SearchType.hybrid,
                 embedder=OpenAIEmbedder(
                     id="text-embedding-3-small",
-                    api_key=OPENAI_API_KEY
+                    api_key=OPENAI_API_KEY,
+                    base_url="https://openrouter.ai/api/v1"  # OpenRouter endpoint
                 ),
                 reranker=CohereReranker(
                     model="rerank-english-v3.0",
