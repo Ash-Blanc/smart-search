@@ -1,8 +1,9 @@
 from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.memory.agent import AgentMemory
-from agno.storage.agent import AgentStorage
+from agno.storage.json import JsonStorage
 from config import OPENAI_API_KEY
+from agents.verification import AntiHallucinationSearch
 import json
 from datetime import datetime
 
@@ -17,7 +18,7 @@ class PersonalizationEngine:
                 base_url="https://openrouter.ai/api/v1"  # OpenRouter endpoint
             ),
             memory=AgentMemory(),
-            storage=AgentStorage(),
+            storage=JsonStorage("./data/personalization"),  # Use JSON storage for personalization data
             instructions=[
                 "Track user search patterns",
                 "Build interest profiles",

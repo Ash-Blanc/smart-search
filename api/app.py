@@ -14,7 +14,7 @@ sys.path.append('..')
 
 from agents.personalization import PersonalizedSmartSearch
 from api.components.search_interface import SearchInterface
-from api.components.results_display import ResultsDisplay
+from api.components.result_display import ResultsDisplay
 from api.components.user_profile import UserProfile
 from utils.formatters import format_results
 

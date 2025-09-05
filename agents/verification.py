@@ -3,6 +3,7 @@ from agno.models.openai import OpenAIChat
 from agno.tools.reasoning import ReasoningTools
 from agno.tools.duckduckgo import DuckDuckGoTools
 from config import OPENAI_API_KEY
+from agents.search_agent import SmartSearchAgent
 
 class VerificationAgent:
     def __init__(self):
