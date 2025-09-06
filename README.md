@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Streamlit](https://img.shields.io/badge/streamlit-1.49+-red.svg)](https://streamlit.io/)
+[![Reflex](https://img.shields.io/badge/reflex-0.6+-purple.svg)](https://reflex.dev/)
 [![FastAPI](https://img.shields.io/badge/fastapi-0.116+-green.svg)](https://fastapi.tiangolo.com/)
 
 An AI-powered search platform that delivers unbiased, hallucination-free, and personalized search results using state-of-the-art AI agents.
@@ -15,7 +15,9 @@ An AI-powered search platform that delivers unbiased, hallucination-free, and pe
 - 🧠 **Reasoning Engine**: Uses chain-of-thought reasoning for better understanding
 - 📊 **Confidence Scoring**: Transparent confidence levels for all results
 - ⚡ **High Performance**: Optimized for speed with async operations
-- 🎨 **Beautiful UI**: Modern, responsive interface built with Streamlit
+- 🎨 **Beautiful UI**: Modern, responsive interface with Buridan UI design principles
+- 📱 **Mobile Responsive**: Works seamlessly on desktop, tablet, and mobile devices
+- ⚙️ **Advanced Options**: Customizable search depth, confidence thresholds, and filters
 - 🔐 **Privacy Focused**: Runs locally with no data collection
 
 ## 🚀 Quick Start
@@ -39,12 +41,17 @@ cp .env.example .env
 
 4. Run the application:
 ```bash
+# Web interface
 uv run python run.py
+
+# Or use the CLI
+uv run python -m cli.smart_search "Your search query"
 ```
 
-5. Open your browser to:
-- Web UI: http://localhost:8501
+5. Access the application:
+- Web UI: http://localhost:3000
 - API: http://localhost:8000
+- CLI: `python -m cli.smart_search`
 
 ## 🏗️ Architecture
 
@@ -56,9 +63,12 @@ smart-search/
 │   ├── search_agent.py    # Main search agent with reasoning
 │   ├── verification.py    # Fact-checking and hallucination detection
 │   └── personalization.py # User preference learning and result personalization
-├── api/                  # FastAPI backend and Streamlit frontend
-│   ├── main.py            # FastAPI endpoints
-│   └── app.py             # Streamlit UI
+├── api/                  # FastAPI backend
+│   └── main.py            # FastAPI endpoints
+├── cli/                  # Command-line interface
+│   └── smart_search.py    # CLI implementation
+├── reflex_app/           # Reflex frontend with Buridan UI design
+│   └── app.py             # Reflex UI with responsive design
 ├── knowledge/            # Knowledge base management
 ├── optimization/         # DSPy optimization modules
 ├── utils/                # Utility functions
@@ -91,7 +101,8 @@ Edit `config.py` to customize:
 - **LLM**: OpenAI GPT models
 - **Vector DB**: [LanceDB](https://github.com/lancedb/lancedb) with hybrid search
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
-- **Frontend**: [Streamlit](https://streamlit.io/)
+- **Frontend**: [Reflex](https://reflex.dev/) - Modern web framework for Python with Buridan UI design principles
+- **CLI**: Built-in command-line interface
 - **Search**: [DuckDuckGo Search](https://pypi.org/project/duckduckgo-search/)
 - **Dependency Management**: [uv](https://github.com/astral-sh/uv)
 
@@ -101,6 +112,36 @@ Edit `config.py` to customize:
 - Accuracy: 95%+ factual accuracy with verification
 - Memory Usage: ~50MB per agent
 - Concurrent Users: 100+ supported
+
+## 💻 Command-Line Interface (CLI)
+
+Smart Search now includes a powerful CLI for quick searches and automation:
+
+```bash
+# Basic search
+python -m cli.smart_search "Latest AI developments"
+
+# Advanced search with options
+python -m cli.smart_search "Climate solutions" --depth deep --confidence 85
+
+# JSON output
+python -m cli.smart_search "Python best practices" --format json --output results.json
+
+# Interactive mode
+python -m cli.smart_search --interactive
+```
+
+See [CLI Documentation](cli/README.md) for more details.
+
+## 🎨 UI/UX Improvements
+
+The web interface has been completely redesigned with modern UI/UX principles:
+
+- **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **Advanced Search Options**: Customizable search depth, confidence thresholds, and filters
+- **Enhanced Visual Design**: Improved typography, color scheme, and visual hierarchy
+- **Performance Optimizations**: Smooth animations and efficient component rendering
+- **Buridan UI Design Principles**: Clean, modern interface with consistent design language
 
 ## 🚀 Deployment
 
