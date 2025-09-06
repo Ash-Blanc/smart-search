@@ -10,7 +10,7 @@ An AI-powered search platform that delivers unbiased, hallucination-free, and pe
 ## ✨ Features
 
 - 🎯 **Zero Hallucinations**: Multi-layer verification system ensures factual accuracy
-- 🔍 **Multi-Source Search**: Aggregates results from DuckDuckGo and knowledge bases
+- 🔍 **Multi-Source Search**: Aggregates results from DuckDuckGo, Serper, and knowledge bases
 - 👤 **Personalization**: Learns from user interactions to provide tailored results
 - 🧠 **Reasoning Engine**: Uses chain-of-thought reasoning for better understanding
 - 📊 **Confidence Scoring**: Transparent confidence levels for all results
@@ -19,6 +19,10 @@ An AI-powered search platform that delivers unbiased, hallucination-free, and pe
 - 📱 **Mobile Responsive**: Works seamlessly on desktop, tablet, and mobile devices
 - ⚙️ **Advanced Options**: Customizable search depth, confidence thresholds, and filters
 - 🔐 **Privacy Focused**: Runs locally with no data collection
+- 🤖 **Agentic Architecture**: Multi-agent system with specialized capabilities
+- 🔄 **API Failover**: Automatic fallback between OpenRouter and OpenAI
+- 📈 **Jira Integration**: Workflow management and task tracking
+- 🎯 **Per-User Optimization**: DSPy-based prompt optimization for each user
 
 ## 🚀 Quick Start
 
@@ -60,9 +64,17 @@ Smart Search uses a multi-agent architecture built with the [Agno](https://githu
 ```txt
 smart-search/
 ├── agents/               # AI agents (search, verification, personalization)
-│   ├── search_agent.py    # Main search agent with reasoning
-│   ├── verification.py    # Fact-checking and hallucination detection
-│   └── personalization.py # User preference learning and result personalization
+│   ├── agent_team.py       # Agent team coordination
+│   ├── api_failover.py     # API failover mechanism
+│   ├── dspy_optimization.py # Per-user prompt optimization
+│   ├── enhanced_search_agent.py # Primary/fallback LLM support
+│   ├── enhanced_verification.py # Enhanced verification
+│   ├── jira_integration.py # Workflow management
+│   ├── personalization.py  # User preference learning
+│   ├── serper_client.py    # Serper API integration
+│   ├── serper_enhanced_search.py # Serper-enhanced search
+│   ├── search_agent.py     # Base search agent
+│   └── verification.py     # Base verification agent
 ├── api/                  # FastAPI backend
 │   └── main.py            # FastAPI endpoints
 ├── cli/                  # Command-line interface
@@ -84,8 +96,30 @@ smart-search/
 Create a `.env` file with your API keys:
 
 ```bash
+# Primary LLM provider - OpenRouter API Key (required for LLM operations)
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_MODEL=gpt-4o-mini
+
+# Fallback LLM provider - OpenAI API Key (for fallback when OpenRouter is unavailable)
 OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-4o-mini
+
+# Search Enhancement APIs
+SERPER_API_KEY=your_serper_api_key_here
+RESPONSE_API_KEY=your_response_api_key_here
+
+# Workflow Integration - Jira
+JIRA_API_KEY=your_jira_api_key_here
+JIRA_BASE_URL=your_jira_base_url_here
+JIRA_USERNAME=your_jira_username_here
+
+# Cohere API Key (required for reranking)
 COHERE_API_KEY=your_cohere_api_key_here
+
+# Environment
+ENVIRONMENT=development
 ```
 
 Edit `config.py` to customize:
@@ -98,12 +132,13 @@ Edit `config.py` to customize:
 
 - **AI Framework**: [Agno](https://github.com/agno-agi/agno) - Multi-agent orchestration
 - **Optimization**: [DSPy](https://github.com/stanfordnlp/dspy) - Prompt optimization
-- **LLM**: OpenAI GPT models
+- **LLM**: OpenAI GPT models with OpenRouter primary/fallback
 - **Vector DB**: [LanceDB](https://github.com/lancedb/lancedb) with hybrid search
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
 - **Frontend**: [Reflex](https://reflex.dev/) - Modern web framework for Python with Buridan UI design principles
 - **CLI**: Built-in command-line interface
-- **Search**: [DuckDuckGo Search](https://pypi.org/project/duckduckgo-search/)
+- **Search**: [DuckDuckGo Search](https://pypi.org/project/duckduckgo-search/) + Serper API
+- **Workflow**: Jira API integration
 - **Dependency Management**: [uv](https://github.com/astral-sh/uv)
 
 ## 📈 Performance
@@ -142,6 +177,23 @@ The web interface has been completely redesigned with modern UI/UX principles:
 - **Enhanced Visual Design**: Improved typography, color scheme, and visual hierarchy
 - **Performance Optimizations**: Smooth animations and efficient component rendering
 - **Buridan UI Design Principles**: Clean, modern interface with consistent design language
+
+## 🤖 Agentic Capabilities
+
+Smart Search uses a sophisticated multi-agent architecture:
+
+- **Team Coordination**: Multiple specialized agents working together
+- **Intent Analysis**: Query understanding and agent selection
+- **API Failover**: Automatic fallback between providers
+- **Jira Integration**: Task management and workflow tracking
+- **Per-User Optimization**: DSPy-based prompt personalization
+
+## 🔐 Privacy & Security
+
+- All data stored locally
+- No external data collection
+- API keys encrypted at rest
+- Secure credential management
 
 ## 🚀 Deployment
 

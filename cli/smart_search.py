@@ -93,6 +93,8 @@ def interactive_mode(search_system, user_id):
             
             # Display results
             print(f"\n📊 Confidence: {result['confidence']}%")
+            if result.get('using_fallback'):
+                print("⚠️  Using fallback LLM provider")
             print("-" * 40)
             print(result['results'])
             
@@ -128,7 +130,9 @@ def output_result(result, format_type, output_file):
             'timestamp': datetime.now().isoformat(),
             'confidence': result['confidence'],
             'results': result['results'],
-            'verification': result['verification']
+            'verification': result['verification'],
+            'personalized': result.get('personalized', False),
+            'using_fallback': result.get('using_fallback', False)
         }
         
         output_str = json.dumps(output_data, indent=2)
@@ -137,6 +141,8 @@ def output_result(result, format_type, output_file):
 ===================
 
 🔍 Confidence: {result['confidence']}%
+{'⚠️  Using fallback LLM provider' if result.get('using_fallback') else ''}
+{'👤 Personalized results' if result.get('personalized') else ''}
 
 📄 Results:
 {result['results']}

@@ -305,11 +305,23 @@ def index() -> rx.Component:
                                 font_size=["xs", "xs", "sm"],
                                 border_radius="full",
                             ),
-                            rx.badge(
-                                "Personalized" if State.current_results.get('personalized') else "Standard",
-                                color_scheme="blue",
-                                font_size=["xs", "xs", "sm"],
-                                border_radius="full",
+                            rx.cond(
+                                State.current_results.get('personalized'),
+                                rx.badge(
+                                    "Personalized",
+                                    color_scheme="purple",
+                                    font_size=["xs", "xs", "sm"],
+                                    border_radius="full",
+                                ),
+                            ),
+                            rx.cond(
+                                State.current_results.get('using_fallback'),
+                                rx.badge(
+                                    "Fallback LLM",
+                                    color_scheme="orange",
+                                    font_size=["xs", "xs", "sm"],
+                                    border_radius="full",
+                                ),
                             ),
                             spacing="3",
                             wrap="wrap",

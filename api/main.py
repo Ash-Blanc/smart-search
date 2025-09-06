@@ -5,7 +5,7 @@ from typing import Optional
 import sys
 sys.path.append('..')
 
-from agents.personalization import PersonalizedSmartSearch
+from agents.agent_team import AgentTeam
 
 app = FastAPI(title="Smart Search API")
 
@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 # Initialize search system
-search_system = PersonalizedSmartSearch()
+search_system = AgentTeam()
 
 class SearchRequest(BaseModel):
     query: str
@@ -29,6 +29,9 @@ class SearchResponse(BaseModel):
     confidence: float
     verification: str
     personalized: bool = False
+    using_fallback: Optional[bool] = False
+    optimized: Optional[bool] = False
+    task_key: Optional[str] = None
 
 @app.get("/")
 def read_root():
@@ -47,20 +50,32 @@ async def search(request: SearchRequest):
             results=result["results"],
             confidence=result["confidence"],
             verification=result["verification"],
-            personalized=result.get("personalized", False)
+            personalized=result.get("personalized", False),
+            using_fallback=result.get("using_fallback", False),
+            optimized=result.get("optimized", False),
+            task_key=result.get("task_key")
         )
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/feedback")
-async def feedback(user_id: str, result_id: str):
+async def feedback(user_id: str, result_id: str, feedback: str):
     """Track user clicks/feedback"""
-    search_system.personalization.update_profile(
+    # Store feedback in user profile
+    from agents.personalization import PersonalizationEngine
+    personalization = PersonalizationEngine()
+    personalization.update_profile(
         user_id,
-        {"clicked_result": result_id}
+        {"clicked_result": result_id, "feedback": feedback}
     )
     return {"status": "recorded"}
+
+@app.get("/status")
+async def get_status():
+    """Get system status"""
+    status = search_system.get_team_status()
+    return status
 
 if __name__ == "__main__":
     import uvicorn
