@@ -11,7 +11,7 @@ def test_cli_help():
     """Test that the CLI help works."""
     result = subprocess.run([
         sys.executable, '-m', 'cli.smart_search', '--help'
-    ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+    ], capture_output=True, text=True, cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     assert result.returncode == 0
     assert 'Smart Search' in result.stdout
@@ -21,7 +21,7 @@ def test_cli_no_args():
     """Test that the CLI shows help when called without arguments."""
     result = subprocess.run([
         sys.executable, '-m', 'cli.smart_search'
-    ], capture_output=True, text=True, cwd=os.path.dirname(os.path.abspath(__file__)))
+    ], capture_output=True, text=True, cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     assert result.returncode == 0
     assert 'Smart Search' in result.stdout

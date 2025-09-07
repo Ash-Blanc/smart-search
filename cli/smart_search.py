@@ -11,6 +11,7 @@ import sys
 import json
 from datetime import datetime
 import hashlib
+import warnings
 
 # Add parent directory to path
 import os
@@ -26,6 +27,10 @@ def create_user_id():
     ).hexdigest()[:8]
 
 def main():
+    # Suppress DuckDuckGo warnings
+    warnings.filterwarnings('ignore', message='.*DuckDuckGo.*', module='.*duckduckgo.*')
+    warnings.filterwarnings('ignore', message='.*duckduckgo.*', module='.*ddg.*')
+    
     parser = argparse.ArgumentParser(
         description="Smart Search - AI-powered search with zero hallucinations",
         formatter_class=argparse.RawDescriptionHelpFormatter,

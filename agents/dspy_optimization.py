@@ -13,10 +13,10 @@ class PromptOptimizer:
     def __init__(self):
         # Configure DSPy with OpenRouter
         try:
-            lm = dspy.OpenAI(
-                model=OPENROUTER_MODEL,
+            lm = dspy.LM(
+                model=f"openrouter/{OPENROUTER_MODEL}",
                 api_key=OPENROUTER_API_KEY,
-                api_base=OPENROUTER_BASE_URL,
+                base_url=OPENROUTER_BASE_URL,
                 max_tokens=2000
             )
             dspy.settings.configure(lm=lm)
